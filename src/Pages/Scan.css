@@ -1,0 +1,361 @@
+.aqua-scan-page {
+    min-height: 100vh;
+    padding: 60px 20px;
+    background:
+        radial-gradient(circle at top, #164e63 0%, #082f49 35%, #031827 100%);
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+.aqua-header {
+    max-width: 850px;
+    margin: 0 auto 35px;
+    text-align: center;
+}
+
+.aqua-logo {
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+.aqua-label {
+    margin: 0;
+    color: #67e8f9;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 4px;
+}
+
+.aqua-header h1 {
+    margin: 8px 0;
+    font-size: clamp(36px, 6vw, 60px);
+}
+
+.aqua-subtitle {
+    max-width: 650px;
+    margin: auto;
+    color: #bae6fd;
+    line-height: 1.7;
+}
+
+/* MODE BUTTONS */
+
+.scan-modes {
+    max-width: 850px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.mode-button {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 18px;
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 18px;
+    background: rgba(255,255,255,.08);
+    color: white;
+    cursor: pointer;
+    text-align: left;
+    transition: .2s;
+}
+
+.mode-button:hover {
+    transform: translateY(-2px);
+    background: rgba(255,255,255,.13);
+}
+
+.mode-button.active {
+    border-color: #67e8f9;
+    background: rgba(34,211,238,.15);
+    box-shadow: 0 0 25px rgba(34,211,238,.15);
+}
+
+.mode-button > span {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.mode-button small {
+    color: #bae6fd;
+}
+
+/* CAMERA */
+
+.camera-card {
+    max-width: 850px;
+    margin: 25px auto;
+    padding: 18px;
+    border-radius: 28px;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.12);
+    backdrop-filter: blur(15px);
+}
+
+.camera-window {
+    position: relative;
+    overflow: hidden;
+    min-height: 450px;
+    border-radius: 20px;
+    background: #020617;
+}
+
+.camera-video {
+    width: 100%;
+    height: 100%;
+    min-height: 450px;
+    object-fit: cover;
+    display: block;
+}
+
+.camera-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 30px;
+}
+
+.camera-icon {
+    font-size: 60px;
+    margin-bottom: 15px;
+}
+
+.camera-placeholder h2 {
+    margin: 5px;
+}
+
+.camera-placeholder p {
+    color: #94a3b8;
+}
+
+/* SCANNER FRAME */
+
+.scanner-frame {
+    position: absolute;
+    inset: 12%;
+    pointer-events: none;
+}
+
+.corner {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    border-color: #67e8f9;
+}
+
+.top-left {
+    top: 0;
+    left: 0;
+    border-top: 4px solid;
+    border-left: 4px solid;
+}
+
+.top-right {
+    top: 0;
+    right: 0;
+    border-top: 4px solid;
+    border-right: 4px solid;
+}
+
+.bottom-left {
+    bottom: 0;
+    left: 0;
+    border-bottom: 4px solid;
+    border-left: 4px solid;
+}
+
+.bottom-right {
+    bottom: 0;
+    right: 0;
+    border-bottom: 4px solid;
+    border-right: 4px solid;
+}
+
+.scan-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 2px;
+    background: #67e8f9;
+    box-shadow: 0 0 15px #67e8f9;
+    animation: scan 2s infinite ease-in-out;
+}
+
+@keyframes scan {
+    0%, 100% {
+        transform: translateY(-180px);
+        opacity: .4;
+    }
+
+    50% {
+        transform: translateY(180px);
+        opacity: 1;
+    }
+}
+
+/* CONTROLS */
+
+.camera-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+    margin: 18px 0;
+    color: #bae6fd;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #22d3ee;
+    box-shadow: 0 0 10px #22d3ee;
+}
+
+.camera-controls {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.primary-button,
+.secondary-button {
+    border: none;
+    border-radius: 999px;
+    padding: 14px 24px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.primary-button {
+    background: #22d3ee;
+    color: #082f49;
+}
+
+.secondary-button {
+    background: rgba(255,255,255,.1);
+    color: white;
+}
+
+/* RESULTS */
+
+.result-card {
+    max-width: 850px;
+    margin: 25px auto;
+    padding: 25px;
+    border-radius: 25px;
+    background: rgba(255,255,255,.09);
+    border: 1px solid rgba(103,232,249,.3);
+}
+
+.result-title {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.result-title > span {
+    font-size: 35px;
+}
+
+.result-title p {
+    margin: 0;
+    color: #67e8f9;
+    font-size: 12px;
+    letter-spacing: 2px;
+}
+
+.result-title h2 {
+    margin: 5px 0 20px;
+}
+
+.result-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,.1);
+}
+
+.result-row span {
+    color: #94a3b8;
+}
+
+.result-divider {
+    height: 1px;
+    background: rgba(255,255,255,.1);
+    margin: 20px 0;
+}
+
+.coming-soon {
+    padding: 15px;
+    border-radius: 12px;
+    background: rgba(34,211,238,.1);
+    color: #bae6fd;
+}
+
+/* INFO */
+
+.aqua-info {
+    max-width: 850px;
+    margin: 30px auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.info-card {
+    display: flex;
+    gap: 15px;
+    padding: 20px;
+    border-radius: 20px;
+    background: rgba(255,255,255,.06);
+}
+
+.info-card > span {
+    font-size: 30px;
+}
+
+.info-card h3 {
+    margin-top: 0;
+}
+
+.info-card p {
+    color: #bae6fd;
+    line-height: 1.6;
+}
+
+/* MOBILE */
+
+@media (max-width: 650px) {
+
+    .aqua-scan-page {
+        padding: 35px 15px;
+    }
+
+    .scan-modes,
+    .aqua-info {
+        grid-template-columns: 1fr;
+    }
+
+    .camera-window,
+    .camera-video {
+        min-height: 380px;
+    }
+
+    .camera-controls {
+        flex-direction: column;
+    }
+
+    .primary-button,
+    .secondary-button {
+        width: 100%;
+    }
+}

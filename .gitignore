@@ -24,3 +24,11 @@ dist-ssr
 *.sw?
 node_modules/
 
+# Java / Maven
+target/
+*.class
+
+# Environment variables / secrets
+.env
+.env.*
+!.env.example
