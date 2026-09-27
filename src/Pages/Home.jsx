@@ -24,7 +24,7 @@ const zones = [
         bioluminescent: false,
         description:
           'Named not for its shell but for the green fat beneath it, tinted by a lifelong diet of seagrass and algae. Resting turtles can hold their breath for hours.',
-        image: '/creatures/green-sea-turtle.png',
+        image: 'https://www.nwf.org/-/media/NEW-WEBSITE/Shared-Folder/Wildlife/Reptiles/reptile_green-sea-turtle_600x300.jpg',
       },
       {
         slug: 'ocean-sunfish',
@@ -35,7 +35,7 @@ const zones = [
         bioluminescent: false,
         description:
           'The heaviest bony fish on Earth. After deep, cold dives to hunt jellyfish, it floats on its side at the surface to warm back up.',
-        image: '/creatures/ocean-sunfish.png',
+        image: 'https://img1.wsimg.com/isteam/ip/c62a16d6-a784-41fb-b95b-6adff6e5c42c/IMG_3954.JPG',
       },
     ],
   },
@@ -59,7 +59,7 @@ const zones = [
         bioluminescent: false,
         description:
           'Its head is a transparent, fluid-filled dome. Inside, tubular green eyes rotate upward to spot silhouettes above, then forward to line up a meal.',
-        image: '/creatures/barreleye.png',
+        image: 'https://www.mbari.org/wp-content/uploads/2020/06/Macropinna-microstoma_barreleye1-e1595969369576.jpg',
       },
       {
         slug: 'vampire-squid',
@@ -70,7 +70,7 @@ const zones = [
         bioluminescent: true,
         description:
           'Neither vampire nor squid. It drifts in oxygen-starved water eating marine snow, and when threatened releases a cloud of glowing mucus instead of ink.',
-        image: '/creatures/vampire-squid.png',
+        image: 'https://www.aquariumofpacific.org/images/olc/Vamp_squid.jpg',
       },
     ],
   },
@@ -94,7 +94,7 @@ const zones = [
         bioluminescent: true,
         description:
           'Females dangle a lure packed with glowing symbiotic bacteria in front of a mouth full of backward-pointing teeth. Anything that investigates rarely leaves.',
-        image: '/creatures/anglerfish.png',
+        image: 'https://live-production.wcms.abc-cdn.net.au/e401b862eacf0f8ff89c1d4e28122184?impolicy=wcms_crop_resize&cropH=1659&cropW=2950&xPos=1260&yPos=834&width=862&height=485',
       },
       {
         slug: 'gulper-eel',
@@ -105,7 +105,7 @@ const zones = [
         bioluminescent: true,
         description:
           'A loosely hinged jaw lets its mouth balloon far larger than its body. The tip of its whip-like tail glows pink, likely to attract prey.',
-        image: '/creatures/gulper-eel.png',
+        image: 'https://twilightzone.whoi.edu/wp-content/uploads/2020/09/Copy-of-Gulper-eel-Eurypharanx-pelicanoides-2-1024x683.jpg',
       },
     ],
   },
@@ -129,7 +129,7 @@ const zones = [
         bioluminescent: false,
         description:
           'A sea cucumber that walks on inflated tube feet, often in herds, vacuuming organic ooze from the seafloor mud.',
-        image: '/creatures/sea-pig.png',
+        image: 'https://media.wired.com/photos/5926d5aecfe0d93c4743188b/master/pass/SeaPig.jpg',
       },
       {
         slug: 'dumbo-octopus',
@@ -140,7 +140,7 @@ const zones = [
         bioluminescent: false,
         description:
           'The deepest-living octopus known. It hovers above the floor by flapping ear-like fins and swallows its prey whole.',
-        image: '/creatures/dumbo-octopus.png',
+        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOVWPK4-OTM5dL3v3PmfcZDjrEvnJVtoPnFsJNdmDRjUl8yldTn9TcS7c&s=10',
       },
     ],
   },
@@ -164,7 +164,7 @@ const zones = [
         bioluminescent: false,
         description:
           'Among the deepest fish ever recorded. A soft skull and gelatinous, scaleless body let it thrive under more than 800 atmospheres.',
-        image: '/creatures/mariana-snailfish.png',
+        image: 'https://preview.redd.it/mariana-snailfish-v0-n9zp0c23meo61.jpg?width=640&crop=smart&auto=webp&s=9559a42d706ea452ba029f4ae45edf343479a043',
       },
       {
         slug: 'hadal-amphipod',
@@ -175,7 +175,7 @@ const zones = [
         bioluminescent: false,
         description:
           'Scavenges the very bottom of the Challenger Deep. It produces enzymes that break down wood and plant debris sinking from the surface.',
-        image: '/creatures/hadal-amphipod.png',
+        image: 'https://ichef.bbci.co.uk/images/ic/976xn/p022x59s.jpg',
       },
     ],
   },
@@ -411,7 +411,7 @@ function Surface() {
   return (
     <section id="surface" data-depth-start={0} data-depth-end={0} className="hero">
       <p className="eyebrow accent">Sea level · 0 m</p>
-      <h1 className="hero-title">Descent</h1>
+      <h1 className="hero-title">✧˚ ༘ 𓇼 𝓘𝓭𝓮𝓷𝓽𝓲𝓞𝓬𝓮𝓪𝓷 𓇼 ༘˚✧</h1>
       <p className="hero-lead">
         {`Scroll to dive ${formatMeters(MAX_DEPTH)} to the bottom of the Challenger Deep, and meet the creatures that live in each layer of the dark.`}
       </p>
