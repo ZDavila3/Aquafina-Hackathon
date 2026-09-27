@@ -37,28 +37,54 @@ public class VisionApiClient {
                 ResponseInputItem.ofMessage(
                         ResponseInputItem.Message.builder()
                                 .role(ResponseInputItem.Message.Role.USER)
+
                                 .addInputTextContent(
                                         """
                                         You are Aqua AI, an environmental
                                         waste-identification assistant.
 
-                                        Look at this image and identify the
+                                        Analyze the image and identify the
                                         primary object or piece of waste.
 
-                                        Return ONLY a short description of:
-                                        1. What the item is
-                                        2. Its likely material
-                                        3. A broad waste category
+                                        Return ONLY valid JSON using exactly
+                                        these four fields:
 
-                                        Do not give disposal instructions yet.
+                                        {
+                                          "item": "the specific object",
+                                          "material": "the likely material",
+                                          "category": "the broad waste category",
+                                          "confidence": 0.0
+                                        }
+
+                                        Rules:
+
+                                        - "item" should be specific.
+                                        - "material" should be as specific as
+                                          the image allows. Examples include
+                                          PET #1 plastic, HDPE #2 plastic,
+                                          aluminum, glass, paper/cardboard,
+                                          steel, or organic material.
+                                        - "category" should be one of:
+                                          recyclable,
+                                          compostable,
+                                          trash,
+                                          or unknown.
+                                        - "confidence" must be a number between
+                                          0.0 and 1.0.
+                                        - Do not provide disposal instructions.
+                                        - Do not include markdown.
+                                        - Do not include explanations outside
+                                          the JSON.
                                         """
                                 )
+
                                 .addContent(
                                         ResponseInputImage.builder()
                                                 .detail(ResponseInputImage.Detail.AUTO)
                                                 .imageUrl(imageDataUrl)
                                                 .build()
                                 )
+
                                 .build()
                 );
 
@@ -77,6 +103,15 @@ public class VisionApiClient {
                 .flatMap(content -> content.outputText().stream())
                 .map(outputText -> outputText.text())
                 .findFirst()
-                .orElse("I could not identify this item.");
+                .orElse(
+                        """
+                        {
+                          "item": "Unknown item",
+                          "material": "Unknown",
+                          "category": "unknown",
+                          "confidence": 0.0
+                        }
+                        """
+                );
     }
 }

@@ -2,11 +2,177 @@ import { useEffect, useRef, useState } from "react";
 import { BrowserMultiFormatReader } from "@zxing/browser";
 import "./Scan.css";
 
+/* =========================================================
+   AQUA IMPACT RULES
+   AI identifies the item.
+   These rules provide the educational information.
+========================================================= */
+
+function getEnvironmentalImpact(result) {
+    const material = (result.material || "").toLowerCase();
+    const category = (result.category || "").toLowerCase();
+    const item = (result.item || "").toLowerCase();
+
+    // PLASTIC
+    if (
+        material.includes("plastic") ||
+        material.includes("polyethylene") ||
+        material.includes("pet") ||
+        material.includes("hdpe") ||
+        material.includes("ldpe") ||
+        material.includes("film") ||
+        item.includes("plastic")
+    ) {
+        return {
+            disposal:
+                category === "recyclable"
+                    ? "Recyclable — check your local recycling rules before placing it in the bin."
+                    : "Trash — many flexible or multilayer plastic items are not accepted in curbside recycling. Check local guidance.",
+
+            animal: "Mariana Snailfish",
+            animalIcon: "🐟",
+
+            animalReason:
+                "Plastic pollution and other human-produced contaminants can reach extreme ocean depths, including the Mariana Trench.",
+
+            impact:
+                "If plastic is improperly discarded, it can enter waterways and eventually contribute to marine pollution that reaches deep-ocean ecosystems.",
+
+            action:
+                "Keep plastic waste out of streets, drains, rivers, and waterways. Follow your local disposal or recycling rules."
+        };
+    }
+
+    // PAPER / CARDBOARD
+    if (
+        material.includes("paper") ||
+        material.includes("cardboard") ||
+        material.includes("paperboard") ||
+        item.includes("cardboard") ||
+        item.includes("paper")
+    ) {
+        return {
+            disposal:
+                "Recyclable — keep paper and cardboard clean and dry, then follow your local recycling rules.",
+
+            animal: "Hadal Amphipod",
+            animalIcon: "🦐",
+
+            animalReason:
+                "Hadal amphipods live in the deepest parts of the ocean and depend on organic material that reaches the seafloor.",
+
+            impact:
+                "Waste that escapes into waterways can contribute to pollution and alter the material that eventually reaches deep-ocean ecosystems.",
+
+            action:
+                "Recycle clean paper and cardboard when accepted locally, and keep loose waste away from waterways."
+        };
+    }
+
+    // ALUMINUM / METAL
+    if (
+        material.includes("aluminum") ||
+        material.includes("aluminium") ||
+        material.includes("metal") ||
+        material.includes("steel") ||
+        item.includes("aluminum") ||
+        item.includes("aluminium")
+    ) {
+        return {
+            disposal:
+                "Recyclable — empty and rinse the container, then follow your local recycling rules.",
+
+            animal: "Dumbo Octopus",
+            animalIcon: "🐙",
+
+            animalReason:
+                "Dumbo octopuses live in deep water and can be affected by pollution and changes to their deep-sea habitat.",
+
+            impact:
+                "Improperly discarded waste can eventually enter aquatic environments and contribute to marine pollution.",
+
+            action:
+                "Recycle metal containers when your local program accepts them, and never intentionally discard them into waterways."
+        };
+    }
+
+    // GLASS
+    if (
+        material.includes("glass") ||
+        item.includes("glass")
+    ) {
+        return {
+            disposal:
+                "Recyclable in many programs — check your local recycling rules because accepted glass types vary.",
+
+            animal: "Sea Pig",
+            animalIcon: "🐖",
+
+            animalReason:
+                "Sea pigs live directly on deep-sea sediments, where pollution and disturbance of the seafloor can affect their habitat.",
+
+            impact:
+                "Waste that reaches aquatic environments can eventually contribute to pollution of marine habitats.",
+
+            action:
+                "Use your local glass recycling program when available and keep broken glass out of waterways."
+        };
+    }
+
+    // ORGANIC / COMPOST
+    if (
+        category.includes("compost") ||
+        material.includes("organic") ||
+        item.includes("food") ||
+        item.includes("fruit") ||
+        item.includes("vegetable")
+    ) {
+        return {
+            disposal:
+                "Compostable — use an appropriate composting program when available.",
+
+            animal: "Hadal Amphipod",
+            animalIcon: "🦐",
+
+            animalReason:
+                "Hadal amphipods are scavengers that consume organic material reaching the deepest parts of the ocean.",
+
+            impact:
+                "Keeping food waste in the correct waste stream helps reduce unnecessary waste from entering waterways.",
+
+            action:
+                "Compost food waste when possible and keep it out of storm drains and natural waterways."
+        };
+    }
+
+    // DEFAULT
+    return {
+        disposal:
+            "Check your local disposal guidelines because the correct waste stream depends on the material and your community's rules.",
+
+        animal: "Mariana Snailfish",
+        animalIcon: "🐟",
+
+        animalReason:
+            "Plastic pollution and other human-produced contaminants can reach extreme ocean depths.",
+
+        impact:
+            "Improperly discarded waste can enter waterways and contribute to pollution that affects marine ecosystems.",
+
+        action:
+            "When in doubt, keep waste out of waterways and check your local disposal guidance."
+    };
+}
+
+
+/* =========================================================
+   SCAN PAGE
+========================================================= */
+
 export function Scan() {
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
     const streamRef = useRef(null);
-    const barcodeReaderRef = useRef(null);
     const barcodeControlsRef = useRef(null);
 
     const [mode, setMode] = useState("camera");
@@ -15,9 +181,10 @@ export function Scan() {
     const [result, setResult] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    // ==========================================
-    // START CAMERA
-    // ==========================================
+
+    /* =====================================================
+       CAMERA
+    ===================================================== */
 
     async function startCamera() {
         try {
@@ -60,18 +227,13 @@ export function Scan() {
         }
     }
 
-    // ==========================================
-    // STOP CAMERA
-    // ==========================================
 
     function stopCamera() {
-        // Stop barcode scanner
         if (barcodeControlsRef.current) {
             barcodeControlsRef.current.stop();
             barcodeControlsRef.current = null;
         }
 
-        // Stop camera stream
         if (streamRef.current) {
             streamRef.current
                 .getTracks()
@@ -80,7 +242,6 @@ export function Scan() {
             streamRef.current = null;
         }
 
-        // Remove video source
         if (videoRef.current) {
             videoRef.current.srcObject = null;
         }
@@ -89,9 +250,10 @@ export function Scan() {
         setStatus("Camera stopped");
     }
 
-    // ==========================================
-    // CAPTURE IMAGE + SEND TO JAVA BACKEND
-    // ==========================================
+
+    /* =====================================================
+       CAPTURE IMAGE
+    ===================================================== */
 
     function captureImage() {
         const video = videoRef.current;
@@ -110,7 +272,6 @@ export function Scan() {
         setLoading(true);
         setStatus("Analyzing image...");
 
-        // Set canvas to same size as camera frame
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
 
@@ -122,7 +283,6 @@ export function Scan() {
             return;
         }
 
-        // Copy current camera frame onto canvas
         context.drawImage(
             video,
             0,
@@ -131,7 +291,6 @@ export function Scan() {
             canvas.height
         );
 
-        // Convert canvas image into a JPEG blob
         canvas.toBlob(
             async (blob) => {
                 if (!blob) {
@@ -141,21 +300,25 @@ export function Scan() {
                 }
 
                 try {
-                    // Create form data
                     const formData = new FormData();
 
-                    // IMPORTANT:
-                    // "image" must match @RequestParam("image")
-                    // in our Java backend.
-                    formData.append("image", blob, "scan.jpg");
+                    formData.append(
+                        "image",
+                        blob,
+                        "scan.jpg"
+                    );
 
-                    console.log("Sending image to Aqua AI backend...");
+                    console.log(
+                        "Sending image to Aqua AI backend..."
+                    );
 
-                    // Send image to Spring Boot
-                    const response = await fetch("/api/scan", {
-                        method: "POST",
-                        body: formData
-                    });
+                    const response = await fetch(
+                        "/api/scan",
+                        {
+                            method: "POST",
+                            body: formData
+                        }
+                    );
 
                     if (!response.ok) {
                         throw new Error(
@@ -163,18 +326,21 @@ export function Scan() {
                         );
                     }
 
-                    // Convert backend response into JavaScript object
                     const data = await response.json();
 
-                    console.log("Aqua AI response:", data);
+                    console.log(
+                        "Aqua AI response:",
+                        data
+                    );
 
-                    // Display result
                     setResult(data);
-
                     setStatus("Scan complete!");
 
                 } catch (error) {
-                    console.error("Scan error:", error);
+                    console.error(
+                        "Scan error:",
+                        error
+                    );
 
                     setStatus(
                         "Something went wrong while analyzing the image."
@@ -191,9 +357,10 @@ export function Scan() {
         );
     }
 
-    // ==========================================
-    // BARCODE SCANNER
-    // ==========================================
+
+    /* =====================================================
+       BARCODE SCANNER
+    ===================================================== */
 
     async function startBarcodeScanner() {
         try {
@@ -201,36 +368,42 @@ export function Scan() {
                 return;
             }
 
-            const reader = new BrowserMultiFormatReader();
+            const reader =
+                new BrowserMultiFormatReader();
 
-            barcodeReaderRef.current = reader;
+            const controls =
+                await reader.decodeFromVideoElement(
+                    videoRef.current,
+                    (barcodeResult) => {
+                        if (barcodeResult) {
+                            const barcode =
+                                barcodeResult.getText();
 
-            const controls = await reader.decodeFromVideoElement(
-                videoRef.current,
-                (result, error) => {
+                            console.log(
+                                "Barcode:",
+                                barcode
+                            );
 
-                    if (result) {
-                        const barcode = result.getText();
+                            setStatus(
+                                `Barcode detected: ${barcode}`
+                            );
 
-                        console.log("Barcode:", barcode);
+                            setResult({
+                                item: "Product barcode detected",
+                                material: "Looking up product...",
+                                barcode
+                            });
 
-                        setStatus(
-                            `Barcode detected: ${barcode}`
-                        );
+                            controls.stop();
 
-                        setResult({
-                            item: "Product barcode detected",
-                            material: "Looking up product...",
-                            barcode
-                        });
-
-                        controls.stop();
-                        barcodeControlsRef.current = null;
+                            barcodeControlsRef.current =
+                                null;
+                        }
                     }
-                }
-            );
+                );
 
-            barcodeControlsRef.current = controls;
+            barcodeControlsRef.current =
+                controls;
 
         } catch (error) {
             console.error(
@@ -244,9 +417,10 @@ export function Scan() {
         }
     }
 
-    // ==========================================
-    // CHANGE SCANNING MODE
-    // ==========================================
+
+    /* =====================================================
+       CHANGE MODE
+    ===================================================== */
 
     function changeMode(newMode) {
         stopCamera();
@@ -262,9 +436,10 @@ export function Scan() {
         }
     }
 
-    // ==========================================
-    // CLEANUP
-    // ==========================================
+
+    /* =====================================================
+       CLEANUP
+    ===================================================== */
 
     useEffect(() => {
         return () => {
@@ -280,16 +455,24 @@ export function Scan() {
         };
     }, []);
 
-    // ==========================================
-    // PAGE
-    // ==========================================
+
+    /* =====================================================
+       IMPACT DATA
+    ===================================================== */
+
+    const environmentalImpact = result
+        ? getEnvironmentalImpact(result)
+        : null;
+
+
+    /* =====================================================
+       PAGE
+    ===================================================== */
 
     return (
         <main className="aqua-scan-page">
 
-            {/* ================================
-                HEADER
-            ================================= */}
+            {/* HEADER */}
 
             <section className="aqua-header">
 
@@ -313,9 +496,7 @@ export function Scan() {
             </section>
 
 
-            {/* ================================
-                SCAN MODE BUTTONS
-            ================================= */}
+            {/* SCAN MODES */}
 
             <div className="scan-modes">
 
@@ -325,7 +506,9 @@ export function Scan() {
                             ? "mode-button active"
                             : "mode-button"
                     }
-                    onClick={() => changeMode("camera")}
+                    onClick={() =>
+                        changeMode("camera")
+                    }
                 >
                     📷
 
@@ -338,6 +521,7 @@ export function Scan() {
                             AI identification
                         </small>
                     </span>
+
                 </button>
 
 
@@ -347,7 +531,9 @@ export function Scan() {
                             ? "mode-button active"
                             : "mode-button"
                     }
-                    onClick={() => changeMode("barcode")}
+                    onClick={() =>
+                        changeMode("barcode")
+                    }
                 >
                     🏷️
 
@@ -360,14 +546,13 @@ export function Scan() {
                             Identify products
                         </small>
                     </span>
+
                 </button>
 
             </div>
 
 
-            {/* ================================
-                CAMERA
-            ================================= */}
+            {/* CAMERA */}
 
             <section className="camera-card">
 
@@ -409,11 +594,8 @@ export function Scan() {
                         <div className="scanner-frame">
 
                             <div className="corner top-left"></div>
-
                             <div className="corner top-right"></div>
-
                             <div className="corner bottom-left"></div>
-
                             <div className="corner bottom-right"></div>
 
                             <div className="scan-line"></div>
@@ -424,9 +606,7 @@ export function Scan() {
                 </div>
 
 
-                {/* ================================
-                    STATUS
-                ================================= */}
+                {/* STATUS */}
 
                 <div className="camera-status">
 
@@ -437,9 +617,7 @@ export function Scan() {
                 </div>
 
 
-                {/* ================================
-                    CAMERA CONTROLS
-                ================================= */}
+                {/* CONTROLS */}
 
                 <div className="camera-controls">
 
@@ -457,7 +635,6 @@ export function Scan() {
                         <>
 
                             {mode === "camera" && (
-
                                 <button
                                     className="primary-button"
                                     onClick={captureImage}
@@ -467,9 +644,7 @@ export function Scan() {
                                         ? "🤖 Analyzing..."
                                         : "🔍 Capture & Scan"}
                                 </button>
-
                             )}
-
 
                             <button
                                 className="secondary-button"
@@ -488,9 +663,7 @@ export function Scan() {
             </section>
 
 
-            {/* ================================
-                HIDDEN CANVAS
-            ================================= */}
+            {/* HIDDEN CANVAS */}
 
             <canvas
                 ref={canvasRef}
@@ -498,13 +671,15 @@ export function Scan() {
             />
 
 
-            {/* ================================
+            {/* =================================================
                 RESULTS
-            ================================= */}
+            ================================================= */}
 
             {result && (
 
                 <section className="result-card">
+
+                    {/* RESULT HEADER */}
 
                     <div className="result-title">
 
@@ -527,10 +702,9 @@ export function Scan() {
                     </div>
 
 
-                    {/* Barcode */}
+                    {/* BARCODE */}
 
                     {result.barcode && (
-
                         <div className="result-row">
 
                             <span>
@@ -542,14 +716,12 @@ export function Scan() {
                             </strong>
 
                         </div>
-
                     )}
 
 
-                    {/* Material */}
+                    {/* MATERIAL */}
 
                     {result.material && (
-
                         <div className="result-row">
 
                             <span>
@@ -561,14 +733,12 @@ export function Scan() {
                             </strong>
 
                         </div>
-
                     )}
 
 
-                    {/* Category */}
+                    {/* CATEGORY */}
 
                     {result.category && (
-
                         <div className="result-row">
 
                             <span>
@@ -580,49 +750,187 @@ export function Scan() {
                             </strong>
 
                         </div>
-
                     )}
 
 
-                    {/* Confidence */}
+                    {/* CONFIDENCE */}
 
                     {result.confidence !== null &&
                         result.confidence !== undefined && (
 
-                        <div className="result-row">
+                            <div className="result-row">
 
-                            <span>
-                                Confidence
-                            </span>
+                                <span>
+                                    Confidence
+                                </span>
 
-                            <strong>
-                                {Math.round(
-                                    result.confidence * 100
-                                )}%
-                            </strong>
+                                <strong>
+                                    {Math.round(
+                                        result.confidence * 100
+                                    )}%
+                                </strong>
 
-                        </div>
-
-                    )}
+                            </div>
+                        )}
 
 
                     <div className="result-divider"></div>
 
 
-                    <div className="coming-soon">
+                    {/* =================================================
+                        AQUA IMPACT
+                    ================================================= */}
 
-                        🤖 Real AI analysis will appear here
+                    {environmentalImpact && (
 
-                    </div>
+                        <div className="aqua-impact">
+
+                            {/* HEADER */}
+
+                            <div className="impact-header">
+
+                                <div className="impact-header-icon">
+                                    🌊
+                                </div>
+
+                                <div>
+
+                                    <p className="impact-label">
+                                        AQUA IMPACT
+                                    </p>
+
+                                    <h3>
+                                        What happens next?
+                                    </h3>
+
+                                    <p className="impact-subtitle">
+                                        See how this item connects to our ocean ecosystem.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            {/* TWO CARDS */}
+
+                            <div className="impact-grid">
+
+                                {/* DISPOSAL */}
+
+                                <div className="impact-card">
+
+                                    <div className="impact-card-icon">
+                                        ♻️
+                                    </div>
+
+                                    <div className="impact-card-content">
+
+                                        <p className="impact-card-label">
+                                            DISPOSAL
+                                        </p>
+
+                                        <h4>
+                                            {result.category === "recyclable"
+                                                ? "Recyclable"
+                                                : result.category === "compostable"
+                                                    ? "Compostable"
+                                                    : result.category === "trash"
+                                                        ? "Trash"
+                                                        : "Check Local Guidelines"}
+                                        </h4>
+
+                                        <p>
+                                            {environmentalImpact.disposal}
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+
+                                {/* ANIMAL */}
+
+                                <div className="impact-card">
+
+                                    <div className="impact-card-icon">
+                                        {environmentalImpact.animalIcon}
+                                    </div>
+
+                                    <div className="impact-card-content">
+
+                                        <p className="impact-card-label">
+                                            DEEP-SEA ANIMAL IMPACT
+                                        </p>
+
+                                        <h4>
+                                            {environmentalImpact.animal}
+                                        </h4>
+
+                                        <p>
+                                            {environmentalImpact.animalReason}
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            {/* WHY IT MATTERS */}
+
+                            <div className="impact-wide-card">
+
+                                <div className="wide-card-icon">
+                                    🌎
+                                </div>
+
+                                <div>
+
+                                    <p className="impact-card-label">
+                                        WHY IT MATTERS
+                                    </p>
+
+                                    <p className="wide-card-text">
+                                        {environmentalImpact.impact}
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            {/* BEST PRACTICE */}
+
+                            <div className="impact-best-practice">
+
+                                <div className="best-practice-icon">
+                                    💡
+                                </div>
+
+                                <div>
+
+                                    <p className="impact-card-label">
+                                        AQUA BEST PRACTICE
+                                    </p>
+
+                                    <p className="best-practice-text">
+                                        {environmentalImpact.action}
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    )}
 
                 </section>
-
             )}
 
 
-            {/* ================================
-                EDUCATIONAL SECTION
-            ================================= */}
+            {/* EDUCATIONAL SECTION */}
 
             <section className="aqua-info">
 

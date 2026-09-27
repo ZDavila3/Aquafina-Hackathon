@@ -359,3 +359,291 @@
         width: 100%;
     }
 }
+/* =========================================================
+   AQUA IMPACT RESULTS
+   ========================================================= */
+
+.aqua-impact {
+    margin-top: 28px;
+    padding: 26px;
+    border-radius: 22px;
+    background: rgba(24, 82, 108, 0.38);
+    border: 1px solid rgba(120, 220, 245, 0.18);
+}
+
+
+/* =========================================================
+   IMPACT HEADER
+   ========================================================= */
+
+.impact-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 24px;
+}
+
+.impact-header-icon {
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background: rgba(83, 205, 231, 0.14);
+
+    font-size: 25px;
+}
+
+.impact-label {
+    margin: 0 0 4px;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    letter-spacing: 0.18em;
+
+    color: #67d9ed;
+}
+
+.impact-header h3 {
+    margin: 0;
+
+    font-size: 24px;
+    line-height: 1.2;
+}
+
+.impact-subtitle {
+    margin: 5px 0 0;
+
+    color: rgba(255, 255, 255, 0.62);
+
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   TOP IMPACT CARDS
+   ========================================================= */
+
+.impact-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 16px;
+
+    margin-bottom: 16px;
+}
+
+.impact-card {
+    display: flex;
+
+    gap: 16px;
+
+    padding: 20px;
+
+    min-height: 150px;
+
+    border-radius: 18px;
+
+    background: rgba(7, 39, 57, 0.55);
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.impact-card:hover {
+    transform: translateY(-2px);
+
+    border-color:
+        rgba(103, 217, 237, 0.28);
+}
+
+.impact-card-icon {
+    flex-shrink: 0;
+
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: rgba(255, 255, 255, 0.07);
+
+    font-size: 22px;
+}
+
+.impact-card-content {
+    min-width: 0;
+}
+
+.impact-card-label {
+    margin: 0 0 7px;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    letter-spacing: 0.14em;
+
+    color: rgba(255, 255, 255, 0.52);
+}
+
+.impact-card h4 {
+    margin: 0 0 8px;
+
+    font-size: 20px;
+
+    color: white;
+}
+
+.impact-card p:not(.impact-card-label) {
+    margin: 0;
+
+    font-size: 14px;
+
+    line-height: 1.55;
+
+    color: rgba(255, 255, 255, 0.68);
+}
+
+
+/* =========================================================
+   WIDE WHY IT MATTERS CARD
+   ========================================================= */
+
+.impact-wide-card {
+    display: flex;
+
+    gap: 16px;
+
+    padding: 20px;
+
+    margin-bottom: 16px;
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(17, 82, 108, 0.48),
+            rgba(7, 39, 57, 0.55)
+        );
+
+    border: 1px solid rgba(103, 217, 237, 0.12);
+}
+
+.wide-card-icon {
+    flex-shrink: 0;
+
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: rgba(103, 217, 237, 0.1);
+
+    font-size: 21px;
+}
+
+.wide-card-text {
+    margin: 0;
+
+    max-width: 850px;
+
+    font-size: 15px;
+
+    line-height: 1.6;
+
+    color: rgba(255, 255, 255, 0.75);
+}
+
+
+/* =========================================================
+   BEST PRACTICE
+   ========================================================= */
+
+.impact-best-practice {
+    display: flex;
+
+    gap: 16px;
+
+    padding: 20px;
+
+    border-radius: 18px;
+
+    background: rgba(67, 185, 131, 0.09);
+
+    border: 1px solid rgba(67, 185, 131, 0.18);
+}
+
+.best-practice-icon {
+    flex-shrink: 0;
+
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: rgba(67, 185, 131, 0.12);
+
+    font-size: 21px;
+}
+
+.best-practice-text {
+    margin: 0;
+
+    font-size: 15px;
+
+    line-height: 1.6;
+
+    color: rgba(255, 255, 255, 0.78);
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .aqua-impact {
+        padding: 18px;
+    }
+
+    .impact-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .impact-header h3 {
+        font-size: 21px;
+    }
+
+    .impact-card {
+        min-height: auto;
+    }
+
+    .impact-wide-card,
+    .impact-best-practice {
+        padding: 17px;
+    }
+
+}
